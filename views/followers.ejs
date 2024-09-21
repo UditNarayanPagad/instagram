@@ -1,0 +1,36 @@
+<% include ./partials/header.ejs %>
+    <div class="text-white p-1">
+        <h1>All followers</h1>
+        <div>
+            <% user.followers.forEach(item=> {%>
+                <div class="text-white flex items-center gap-3 mt-5">
+                    <div class="image w-[50px] h-[50px] rounded-full bg-sky-100 overflow-hidden">
+                        <a href="/profile/<%= item._id %>" class="outline-none"><img
+                                src="/images/uploads/<%= item.picture %>" alt="" /></a>
+                    </div>
+                    <div class="text">
+                        <h2>
+                            <%= item.username %>
+                        </h2>
+                        <h4 class="text-xs opacity-60 leading-none">
+                            <%= item.name %>
+                        </h4>
+                    </div>
+                    <div class="flex items-center ml-auto gap-2">
+                        <div class="flex gap-2">
+                            <a class="px-3 py-2 bg-zinc-800 text-xs rounded-md inline-block" href="">Message</a>
+                            <form action="/check/followfromFollowers/<%= item._id %>" method="get">
+                                <% if (item.followers.indexOf(user.id) === -1) { %> 
+                                    <button class="px-2 py-2 bg-blue-600 text-xs rounded-md inline-block">Follow Back</button>
+                                <% } else { %> 
+                                    <button class="px-2 py-2 bg-zinc-800 text-xs rounded-md inline-block">Unfollow</button>
+                                <% } %> 
+                            </form>                            
+                        </div>
+                        <i class="ri-more-2-fill text-xl cursor-pointer"></i>
+                    </div>
+                </div>
+                <% }); %>
+        </div>
+    </div>
+    <% include ./partials/footer.ejs %>

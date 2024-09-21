@@ -1,0 +1,28 @@
+<% include ./partials/header.ejs %>
+<div class="text-white p-1">
+    <h1>Following</h1>
+    <h3 class="text-sm text-zinc-300 px-2 w-full flex justify-between">Sorted by default <i class="ri-sort-desc text-xl cursor-pointer"></i></h3>
+    <div>
+        <% user.following.reverse().forEach(item => { %>
+            <a href="#" class="outline-none"></a>
+            <div class="text-white flex items-center gap-3 mt-5 w-full">
+                <div class="image w-[50px] h-[50px] rounded-full bg-sky-100 overflow-hidden">
+                    <a href="/profile/<%= item._id %>" class="outline-none"><img src="/images/uploads/<%= item.picture %>" alt=""></a>
+                    </div>
+                <div class="text">
+                    <h2><%= item.username %></h2>
+                    <h4 class="text-xs opacity-60 leading-none"><%= item.name %></h4>
+                </div>
+                <div class="flex justify-between ml-auto gap-2">
+                        <a class="px-3 py-2 bg-zinc-800 text-xs rounded-md" href="">Message</a>
+                            <form action="/check/followfromFollowing/<%= item._id %>" method="get">
+                              <button  class="px-3 py-2 bg-zinc-800 text-xs rounded-md"><%= item.followers.indexOf(user.id) === -1 ? "Follow" : "Unfollow" %></button>
+                            </form>
+                    <i class="ri-more-2-fill text-xl cursor-pointer"></i>
+                </div>
+            </div>            
+        </a>
+        <% }); %>
+    </div>
+</div>
+<% include ./partials/footer.ejs %>

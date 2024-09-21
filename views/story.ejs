@@ -1,0 +1,140 @@
+<% include ./partials/header.ejs %>
+
+<div
+  class="text-white flex flex-col p-2 my-auto w-full relative items-center my-auto h-[100vh]"
+>
+  <div class="top absolute top-2 w-full">
+    <div class="w-full bg-black h-[3px] flex gap-1">
+      <% var count = 100/storyUser.stories.length %> <%
+      storyUser.stories.forEach((story,index)=>{%>
+      <div
+        id="<%= index %>"
+        style="width: <%= count %>%"
+        class="h-full bg-zinc-600 rounded-md"
+      ></div>
+      <% }) %>
+    </div>
+
+    <div class="circle flex-shrink-0 flex gap-3 items-center pt-2">
+      <div
+        class="gradient w-[43px] h-[43px] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center"
+      >
+        <div class="inner w-[100%] h-[100%] rounded-full overflow-hidden">
+          <img
+            class="w-full h-full object-cover"
+            src="/images/uploads/<%= storyUser.picture %>"
+            alt=""
+          />
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <h2 class="font-semibold"><%= storyUser.username %></h2>
+        <h6 class="text-xs text-zinc-300">song: Udit nara...</h6>
+      </div>
+    </div>
+  </div>
+
+  <div class="imgSec w-full mt-16 ">
+    <img
+      class="mt-2"
+      id="image"
+      width="100%"
+      src="/images/uploads/<%= storyUser.stories[0].story %>"
+      alt="Story"
+    />
+  </div>
+  <i
+    id="left"
+    class="ri-arrow-left-circle-fill absolute top-[50%] left-1 text-2xl cursor-pointer"
+    onclick="prevStory()"
+  ></i>
+  <i
+    id="right"
+    class="ri-arrow-right-circle-fill absolute top-[50%] right-1 text-2xl cursor-pointer"
+    onclick="nextStory()"
+  ></i>
+  <div class="w-full absolute bottom-12 h-[40px] flex items-center">
+    <div class="h-full w-[90%]">
+      <form action="">
+        <input class="reply h-[35px] w-[80%] pl-3 rounded-full bg-zinc-700" type="text" placeholder="Reply to story.." />
+        <i onclick="send()" class="send ri-send-plane-2-fill text-xl bg-pink-400 p-1.5 rounded-full cursor-pointer"></i>  
+      </form>
+    </div>
+    <div>
+      <i onclick="like()" class="heart ri-heart-3-line text-zinc-100 text-2xl bg-zinc-700 p-1.5 rounded-full cursor-pointer"></i>
+    </div>
+  </div>
+</div>
+<script>
+    
+    // Get stories array from server
+    const stories = <%- JSON.stringify(storyUser.stories) %>;
+    let currentIndex = 0;
+
+  function updateLine(){
+      for (let index = 0; index < stories.length; index++) {
+      if (index >= 0) {
+          document.getElementById(`${index}`).style.backgroundColor = "#767676"
+      }
+          document.getElementById(`${currentIndex}`).style.backgroundColor = "white"
+    }
+  }
+  updateLine();
+    if (currentIndex === 0) {
+          document.getElementById('left').style.display = "none"
+      }
+      else{
+          document.getElementById('left').style.display = "inline-block"
+      }
+    function updateImage() {
+      const imgElement = document.getElementById('image');
+
+      document.getElementById(`${currentIndex}`).style.backgroundColor = "white"
+      if (currentIndex === 0) {
+          document.getElementById('left').style.display = "none"
+      }
+      else{
+          document.getElementById('left').style.display = "inline-block"
+      }
+      imgElement.src = `/images/uploads/${stories[currentIndex].story}`;
+
+    }
+
+    function nextStory() {
+      // Move to the next story
+      currentIndex++;
+      if (currentIndex >= stories.length) {
+        // Redirect to feedpage when stories are exhausted
+        window.location.href = '/feed';
+      } else {
+        updateImage();
+        updateLine();
+      }
+    }
+
+    function prevStory() {
+      // Move to the previous story
+      currentIndex--;
+      if (currentIndex < 0) {
+        currentIndex = 0; // Prevent going below 0
+      }
+      updateImage();
+      updateLine();
+    }
+function like(){
+  if (document.querySelector('.heart').classList.contains("ri-heart-3-line")) {
+              document.querySelector('.heart').classList.remove("ri-heart-3-line", "text-zinc-100");
+              document.querySelector('.heart').classList.add("ri-heart-3-fill","text-red-500");
+              } else {
+                document.querySelector('.heart').classList.remove("ri-heart-3-fill","text-red-500");
+                document.querySelector('.heart').classList.add("ri-heart-3-line", "text-zinc-100");
+              }
+}
+function send(){
+  document.querySelector('.send').addEventListener('click',()=>{
+    document.querySelector('.reply').value = ""
+  })
+}
+</script>
+
+<% include ./partials/footer.ejs %>

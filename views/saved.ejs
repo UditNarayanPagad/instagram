@@ -1,0 +1,22 @@
+<% include ./partials/header.ejs %>
+    <% if (user.saved.length > 0) {%>
+        <div class="w-full flex flex-col mb-20">
+            <% user.saved.reverse().forEach(post=> {%>
+                <div class="w-full flex flex-col border-[1px] border-slate-500">
+                    <div class="relative w-full h-[350px] mt-2 bg-black overflow-hidden">
+                        <img class="postimg w-full h-full object-cover" src="/images/uploads/<%= post.picture %>" alt="" />
+                    </div>
+                    <div class="options w-full px-2 flex justify-end items-center text-white text-[1.4rem] bg-zinc-900">
+                        <div class="flex gap-3 mt-2"></div>
+                            
+                                    <i data-postid="<%= post.id %>"
+                                        class="save ri-bookmark-fill cursor-pointer text-zinc-100"></i>
+                        </div>
+                        <% }); %>
+                    </div>
+                    <% }else{ %>
+                        <h2 class="text-white">No saved posts</h2>
+                    </div>
+            <% } %>
+        </div>
+<% include ./partials/footer.ejs %>
